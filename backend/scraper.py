@@ -38,10 +38,11 @@ def get_conferences(category):
             currentConference = {'name': row1_columns[0].text, 
                                 'link': 'http://www.wikicfp.com' + row1_columns[0].findChild('a').get('href'),
                                 'location': row2_columns[1].text,
-                                'deadline': row2_columns[2].text}
+                                'deadline': row2_columns[2].text,
+                                'category': category}
             conferenceList.append(currentConference)
     return conferenceList
 
 if __name__ == '__main__':
-    for x in get_conferences('architecture'):
+    for x in get_conferences('information security'):
         print(x)

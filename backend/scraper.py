@@ -21,7 +21,6 @@ def get_conferences(category):
         # Find a list of all rows containing conference information
         ## Note: Each conference is spread across 2 rows
         table = div.findChild("table").findChildren('tr', recursive=False)[2]
-        ## Note: removes the first 'tr' entry since it acts as a header row
         conference_html = table.findChild("table").findChildren('tr', recursive=False)
 
         filtered_conference_html = []

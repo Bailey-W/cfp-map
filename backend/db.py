@@ -27,7 +27,7 @@ def add_conference_safely(conference):
         # Inserts category if it doesn't already exist
         cur.execute("INSERT INTO categories (category_name) VALUES (%s)", (conference['category'], ))
     else:
-        # Updates the category without changing information in order to force an updated datetime in DB
+        # Updates the category with newest datetime
         cur.execute("UPDATE categories SET last_updated=%s WHERE category_name=%s", (datetime.now(), conference['category']))
 
     cur.execute("SELECT * FROM categories_conferences WHERE category=%s AND conference=%s", ( conference['category'] , conference['name'] ))

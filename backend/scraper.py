@@ -1,5 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
+import json
+
+# Reads google cloud api from api.secret file in parent directory
+api_key_file = open('../api.secret')
+api_key = api_key_file.readline()
 
 def get_conferences(category):
     conferenceList = []
@@ -35,14 +40,25 @@ def get_conferences(category):
         for conf in range(0, len(filtered_conference_html), 2):
             row1_columns = filtered_conference_html[conf].findChildren('td')
             row2_columns = filtered_conference_html[conf + 1].findChildren('td')
+            lat, lng = geo_locate_conference(row2_columns[1].text)
             currentConference = {'name': row1_columns[0].text, 
                                 'link': 'http://www.wikicfp.com' + row1_columns[0].findChild('a').get('href'),
                                 'location': row2_columns[1].text,
+                                'lat': lat,
+                                'lng': lng,
                                 'deadline': row2_columns[2].text,
                                 'category': category}
             conferenceList.append(currentConference)
     return conferenceList
 
+def geo_locate_conference(location):
+    if location == 'N/A' or location == 'Virtual Conference':
+        return 0, 0
+    resp = requests.get(f'https://maps.googleapis.com/maps/api/geocode/json?address={location}&key={api_key}')
+    geocoded_location = json.loads(resp.text)['results'][0]['geometry']['location']
+    return geocoded_location['lat'], geocoded_location['lng']
+
 if __name__ == '__main__':
-    for x in get_conferences('information security'):
-        print(x)
+    conferences = get_conferences('AI')
+    for conference in conferences:
+        print(conference)

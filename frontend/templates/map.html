@@ -30,11 +30,11 @@
         }
       ).addTo(map);
 
-      {% for conference in conferences %}\
-        var marker = L.marker([51.5, -0.09]).addTo(map);
+      {% for conference in conferences %}
+        var marker = L.marker([{{conference['lat']}}, {{conference['lng']}}]).addTo(map);
         marker
           .bindPopup(
-            '<a style="color:orange" href="http://www.google.com">Hello world!</a><br>I am a popup.'
+            '<a style="color:orange" href="{{conference['link']}}" target="_blank">{{conference['name']}}</a><br>I am a popup.'
           )
       {% endfor %}
     </script>

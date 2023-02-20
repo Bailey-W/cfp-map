@@ -37,4 +37,5 @@ def categories():
     return {'categories': category_list}
 
 if __name__ == '__main__':
-    app.run(debug=True, port=2502)
+    # app.run(debug=True, port=2502)
+    app.run(port=2502)

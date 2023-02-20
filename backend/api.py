@@ -13,7 +13,7 @@ db = mysql.connector.connect(
 cur = db.cursor()
 
 @app.route("/conferences", methods=['GET'])
-def home():
+def conferences():
     category = request.args.get('category')
     conference_list = []
     cur.execute('SELECT * FROM categories_conferences INNER JOIN conferences ON categories_conferences.conference=conferences.conf_name WHERE category=%s', (category, ))
@@ -27,6 +27,14 @@ def home():
                           'category': category}
         conference_list.append(conference_obj)
     return {'conferences': conference_list}
+
+@app.route("/categories", methods=['GET'])
+def categories():
+    cur.execute('SELECT category_name FROM categories')
+    category_list = []
+    for category in cur.fetchall():
+        category_list.append(category[0])
+    return {'categories': category_list}
 
 if __name__ == '__main__':
     app.run(debug=True, port=2502)

@@ -5,6 +5,6 @@
 ## Sources
 
 Geocoding:  
-Google Maps API
+Google Maps API  
 Maps:  
 https://leafletjs.com/

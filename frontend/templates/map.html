@@ -1,42 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-      crossorigin=""
-    />
-    <script
-      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-      crossorigin=""
-    ></script>
-  </head>
-  <body>
-    <div id="map" style="width: 1200px; height: 800px"></div>
-    <script>
-      const map = L.map("map").setView([0, 0], 2);
+{% extends "base.html" %} {% block title%}{{category}}{% endblock %} {% block
+head %}
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+  integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+  crossorigin=""
+/>
+<script
+  src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+  integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+  crossorigin=""
+></script>
+{% endblock head %} {% block content %}
+<a href="/categories" class="back"><h3 class="back">← Back</h3></a>
+<h2 style="margin-top: 0">{{category}} Conferences</h2>
 
-      const tiles = L.tileLayer(
-        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
-        {
-          attribution:
-            "Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012",
-        }
-      ).addTo(map);
+<div id="map" class="map-custom"></div>
+<script>
+  const map = L.map("map").setView([0, 0], 2);
 
-      {% for conference in conferences %}
-        var marker = L.marker([{{conference['lat']}}, {{conference['lng']}}]).addTo(map);
-        marker
-          .bindPopup(
-            '<a style="color:orange" href="{{conference['link']}}" target="_blank">{{conference['name']}}</a><br>I am a popup.'
-          )
-      {% endfor %}
-    </script>
-  </body>
-</html>
+  const tiles = L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+    {
+      attribution:
+        "Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012",
+    }
+  ).addTo(map);
+
+  {% for conference in conferences %}
+    var marker = L.marker([{{conference['lat']}}, {{conference['lng']}}]).addTo(map);
+    marker
+      .bindPopup(
+        '<a style="color:orange" href="{{conference['link']}}" target="_blank">{{conference['name']}}</a><br>I am a popup.'
+      )
+  {% endfor %}
+</script>
+{% endblock %}
